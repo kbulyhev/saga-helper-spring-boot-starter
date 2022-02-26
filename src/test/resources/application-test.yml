@@ -1,0 +1,25 @@
+saga:
+  connect-timeout-millis: ${SAGA_DEFAULT_CONNECT_TIMEOUT:20000}
+  read-timeout-millis: ${SAGA_DEFAULT_READ_TIMEOUT:70000}
+  current-service:
+    name: ${SERVICE_NAME:example}
+    url: http:/localhost:8080
+    paths:
+      orders:
+#        requestPath: /saga/orders/request
+        compensationPath: /saga/orders/compensation
+  target-services:
+    payment-service:
+      url: ${SAGA_COORDINATOR_URL:http:/localhost:8081}
+      paths:
+        payments:
+          requestPath: /saga/payments/request
+          compensationPath: /saga/payments/compensation
+        payments2:
+          requestPath: /saga/payments/request
+          compensationPath: /saga/payments/compensation
+  coordinator:
+    url: ${SAGA_COORDINATOR_URL:awd}
+    connect-timeout-millis: ${SAGA_COORDINATOR_CONNECT_TIMEOUT:${saga.connect-timeout-millis}}
+    read-timeout-millis: ${SAGA_COORDINATOR_READ_TIMEOUT:${saga.read-timeout-millis}}
+
